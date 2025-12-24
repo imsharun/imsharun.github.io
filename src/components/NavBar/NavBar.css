@@ -1,52 +1,63 @@
 .nav {
-    display: flex;
+  
     position: fixed;
-    top: 0;
-    padding: 0.5rem 1.5rem;
-    animation: slideDown 0.3s ease-out;
+    right: 15px;
+    padding: 0.5rem 0px;
+    display: flex;
     justify-content: flex-end;
-    z-index: 1000;   
+    z-index: 1000;
     pointer-events: none;
-    &.hidden {
-        transform: translateY(-100%);
-         animation: slideUp 0.3s ease-in-out;
-        pointer-events: none;  
-    }
+    transform: translateY(-120%);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
+/* shown: slide in and accept clicks only inside links container */
+.nav.visible {
+  transform: translateY(0);
+  opacity: 1;
+  animation: slideDown 0.3s ease-out;
+}
 
-.nav-links-container{
-    display: flex;
-    background: #00000094;
-     pointer-events: all;
-    backdrop-filter: blur(8px);
-    z-index: 1000;
-    width: 111px;
-    justify-content: space-evenly;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    height: 34px;
-    align-items: center;
-    border-radius: 12px;
-    border: 1px solid #ffffff14;
+/* hidden: off-screen, no animation */
+.nav.hidden {
+  transform: translateY(-120%);
+  opacity: 0;
+  animation: none;
+}
+
+.nav-links-container {
+  display: flex;
+  background: #00000094;
+  pointer-events: all; /* enable clicks only on the pill */
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  width: 111px;
+  justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 34px;
+  align-items: center;
+  border-radius: 12px;
+  border: 1px solid #ffffff14;
 }
 
 .nav a {
-    color: inherit;
+  color: inherit;
 }
 
 .cart-link {
-    position: relative;
+  position: relative;
 }
 
 .badge {
-    display: inline-block;
-    min-width: 1rem;
-    padding: 0 0.35rem;
-    text-align: center;
-    border-radius: 999px;
-    background: var(--color-primary);
-    color: white;
-    font-size: 0.8rem;
-    margin-left: 0.25rem;
+  display: inline-block;
+  min-width: 1rem;
+  padding: 0 0.35rem;
+  text-align: center;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
 }

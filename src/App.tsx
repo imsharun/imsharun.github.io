@@ -13,7 +13,7 @@ export default function App() {
   const scrollY = useScrollPosition()
 
   const showNav =
-    location.pathname !== '/' || scrollY > 300
+    location.pathname !== '/' || scrollY > 200
 
 
   return (

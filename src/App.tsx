@@ -6,7 +6,6 @@ import Footer from './components/Footer/Footer'
 import NavBar from './components/NavBar/NavBar'
 //import NavBar from './components/NavBar/NavBar'
 import useScrollPosition from './hooks/useScrollPosition'
-import { useEffect } from 'react'
 
 export default function App() {
   const location = useLocation()

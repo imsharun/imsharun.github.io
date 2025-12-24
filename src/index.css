@@ -29,7 +29,8 @@
   --color-bg-header-dark: #100f0f;
   --color-text-secondary: #666;
   --color-oregano-yellow: #E7B700;
-  --color-btn-bg:#f1f1f1;
+  --color-btn-bg: rgba(255, 255, 255, 0.1);
+
   --color-section-bg: #fafafa00;
 }
 
@@ -71,16 +72,14 @@ button {
   background-color:var(--color-btn-bg);
   cursor: pointer;
   transition: border-color 0.25s;
-  color: black;
+  color: white;
 }
 
-button:hover {
-  border-color: var(--color-primary);
-}
+
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto var(--color-primary);
+  outline: 1px solid white;
 }
 
 @keyframes slideIn {

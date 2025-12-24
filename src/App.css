@@ -8,6 +8,7 @@
 .container {
    height: auto;
   overflow: visible;
+  flex:1;
 }
 
 

@@ -9,7 +9,7 @@ export default function NavBar({ show }: { show?: boolean }) {
 
     return (
         <nav className={`nav ${show ? 'visible' : 'hidden'}`}>
-            <div className='nav-links-container'>
+            <div className='nav-left'>
             <NavLink to="/" end aria-label="Home" onClick={() => {
     if (window.location.pathname === "/") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -17,11 +17,14 @@ export default function NavBar({ show }: { show?: boolean }) {
   }} >
                 <Icon light={homeDark} dark={homeDark} alt="Home" />
             </NavLink>
+            </div>
 
+            <div className='nav-right'>
             <NavLink to="/cart" className="cart-link" aria-label="Cart">
                 <Icon light={cartDark} dark={cartDark} alt="Cart" />
                 <span className="badge">{totalItems}</span>
-            </NavLink></div>
+            </NavLink>
+            </div>
         </nav>
 
     );

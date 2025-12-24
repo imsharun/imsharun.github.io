@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard/ProductCard';
 //import Loader from '../components/Common/Loader/Loader';
-import { liquidProducts, powderProducts } from '../data/products';
 import { liquidThumbmails, powderThumbnails } from '../data/thumbnails';
 //import loaderLight from '../assets/loader-light.gif';
-import type { Product } from '../types';
+import type { OreganoProduct } from '../types';
 import leftArrow from '../assets/icons/left-arrow.png';
 import rightArrow from '../assets/icons/right-arrow.png';
 import oreganoHomeGif from '../assets/gallery/oregano-home.gif';
 import gallery1 from '../assets/gallery/gallery1.png';
 import gallery2 from '../assets/gallery/gallery2.png';
+import {catalog} from '../data/allproducts';
 
 import './Products.css';
 import Icon from '../components/Common/Icon/Icon';
@@ -17,10 +17,10 @@ import Header from '../components/Home/Home';
 
 export default function Products() {
  
-  const [products, setProducts] = useState<Product[]>([]);
-  //const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<OreganoProduct[]>([]);
+  
 
-  const categories = [0, 1];
+  const categories: (keyof typeof catalog)[] = ['spices', 'powders', 'liquidEssentials'];
   const [index, setIndex] = useState(0);
 
   const activeKey = categories[index];
@@ -41,13 +41,8 @@ export default function Products() {
   };
 
   useEffect(() => {
-    // Simulate backend fetch with 5-second delay
-   
-      if (activeKey === 0) setProducts(powderProducts);
-      else
-        setProducts(liquidProducts);
-      
- 
+    // Load products for the active category; fallback to empty to avoid undefined
+    setProducts(catalog[activeKey] ?? []);
   }, [activeKey]);
 
 
@@ -73,7 +68,13 @@ export default function Products() {
           <button onClick={prev}>
             <Icon light={leftArrow} alt="Prev" />
           </button>
-          <div>{activeKey === 0 ? "Spices" : "Liquid Essentials"}</div>
+          <div>
+            {activeKey === 'spices'
+              ? 'Spices'
+              : activeKey === 'powders'
+              ? 'Powders'
+              : 'Liquid Essentials'}
+          </div>
           <button onClick={next}>
             <Icon light={rightArrow} alt="Next" />
           </button>
@@ -83,7 +84,7 @@ export default function Products() {
         {/* Thumbnails */}
         
         <div className="thumbnails">
-          {(activeKey === 0 ? powderThumbnails : liquidThumbmails).map((thumbnail, i) => (
+          {(activeKey === 'powders' ? powderThumbnails : liquidThumbmails).map((thumbnail, i) => (
             <img key={i} src={thumbnail} alt="" />
           ))}
         </div>

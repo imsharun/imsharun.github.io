@@ -11,8 +11,8 @@ export default function App() {
   const location = useLocation()
   const scrollY = useScrollPosition()
 
-  const showNav =
-    location.pathname !== '/' || scrollY > 200
+  const showNav = location.pathname !== '/cart' &&
+    (location.pathname === '/' && scrollY > 200)
 
 
   return (

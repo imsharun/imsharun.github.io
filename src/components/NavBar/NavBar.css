@@ -1,10 +1,10 @@
 .nav {
   
     position: fixed;
-    right: 15px;
-    padding: 0.5rem 0px;
+    top: 15px;
+    width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     z-index: 1000;
     pointer-events: none;
     transform: translateY(-120%);
@@ -25,24 +25,35 @@
   animation: none;
 }
 
-.nav-links-container {
+.nav-left,
+.nav-right {
   display: flex;
   background: #00000094;
   pointer-events: all; /* enable clicks only on the pill */
   backdrop-filter: blur(8px);
   z-index: 1000;
-  width: 111px;
-  justify-content: space-evenly;
-  flex-direction: row;
-  flex-wrap: nowrap;
   height: 34px;
   align-items: center;
   border-radius: 12px;
   border: 1px solid #ffffff14;
+  padding: 0 0.5rem;
+}
+
+.nav-left {
+  justify-content: flex-start;
+      margin-left: 27px;
+}
+
+.nav-right {
+  justify-content: flex-end;
+      margin-right: 27px;
 }
 
 .nav a {
   color: inherit;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .cart-link {

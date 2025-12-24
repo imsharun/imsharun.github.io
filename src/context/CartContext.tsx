@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
-import type { CartAction, CartState, Product } from '../types';
+import type { CartAction, CartState, OreganoProduct } from '../types';
 
 const CartContext = createContext<{
   state: CartState;
-  addItem: (product: Product, quantity?: number) => void;
-  removeItem: (productId: string) => void;
-  updateQty: (productId: string, quantity: number) => void;
+  addItem: (product: OreganoProduct, quantity?: number) => void;
+  removeItem: (productId: number) => void;
+  updateQty: (productId: number, quantity: number) => void;
   clear: () => void;
   totalItems: number;
   subtotal: number;
@@ -71,16 +71,19 @@ function usePersistedCart() {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = usePersistedCart();
 
-  const addItem = (product: Product, quantity = 1) =>
+  const addItem = (product: OreganoProduct, quantity = 1) =>
     dispatch({ type: 'ADD_ITEM', product, quantity });
-  const removeItem = (productId: string) => dispatch({ type: 'REMOVE_ITEM', productId });
-  const updateQty = (productId: string, quantity: number) =>
+  const removeItem = (productId: number) => dispatch({ type: 'REMOVE_ITEM', productId });
+  const updateQty = (productId: number, quantity: number) =>
     dispatch({ type: 'UPDATE_QTY', productId, quantity });
   const clear = () => dispatch({ type: 'CLEAR' });
 
   const { totalItems, subtotal } = useMemo(() => {
     const totalItems = state.items.reduce((acc, i) => acc + i.quantity, 0);
-    const subtotal = state.items.reduce((acc, i) => acc + i.quantity * i.product.price, 0);
+    const subtotal = state.items.reduce((acc, i) => {
+      const [, price] = Object.entries(i.product.price)[0] ?? [];
+      return acc + i.quantity * (price ?? 0);
+    }, 0);
     return { totalItems, subtotal };
   }, [state.items]);
 

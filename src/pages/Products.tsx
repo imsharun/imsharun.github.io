@@ -17,7 +17,7 @@ import Icon from '../components/Common/Icon/Icon';
 export default function Products({ onCarouselChange }: { onCarouselChange?: (index: number) => void }) {
  
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
 
   const categories = [0, 1];
   const [index, setIndex] = useState(0);
@@ -43,25 +43,22 @@ export default function Products({ onCarouselChange }: { onCarouselChange?: (ind
 
   useEffect(() => {
     // Simulate backend fetch with 5-second delay
-    const timer = setTimeout(() => {
+   
       if (activeKey === 0) setProducts(powderProducts);
       else
         setProducts(liquidProducts);
-      setLoading(false);
-    }, 200);
-
-    return () => clearTimeout(timer);
-  }, [index]);
+ 
+  }, [activeKey]);
 
 
 
-  if (loading) {
-    return (
-      <section style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-        <Loader light={loaderLight} dark={loaderLight} alt="Loading" />
-      </section>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <section style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+  //       <Loader light={loaderLight} dark={loaderLight} alt="Loading" />
+  //     </section>
+  //   );
+  // }
 
   return (
     <div className="products-page">  
@@ -80,7 +77,9 @@ export default function Products({ onCarouselChange }: { onCarouselChange?: (ind
           </button>
         </div>
 
+      <section className="thumbnails-and-products" key={activeKey}>
         {/* Thumbnails */}
+        
         <div className="thumbnails">
           {(activeKey === 0 ? powderThumbnails : liquidThumbmails).map((thumbnail, i) => (
             <img key={i} src={thumbnail} alt="" />
@@ -91,6 +90,7 @@ export default function Products({ onCarouselChange }: { onCarouselChange?: (ind
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
+      </section>
       </section>
 
       {/* Gallery Section */}

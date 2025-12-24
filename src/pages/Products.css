@@ -92,10 +92,11 @@
 .gallery-images-container {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    justify-content: space-between;
+    gap:1em;
     & .gallery-image {
         border-radius: 20px;
-        max-width: 48%;
         object-fit: cover;
+        width: 100%;
     }
 }

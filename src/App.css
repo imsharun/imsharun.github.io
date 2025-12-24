@@ -6,10 +6,8 @@
 }
 
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  flex:1;
+   height: auto;
+  overflow: visible;
 }
 
 
@@ -70,9 +68,11 @@
   justify-content: flex-end;
 }
 
+
 @media (prefers-color-scheme: dark) {
   .cart-item {
     background: var(--color-bg-dark);
     border-color: var(--color-border-dark);
   }
 }
+

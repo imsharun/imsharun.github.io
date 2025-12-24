@@ -1,6 +1,6 @@
 //import { NavLink } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
-import './Header.css';
+//import { useCart } from '../../context/CartContext';
+import './Home.css';
 //import cartLight from '../../assets/icons/cart-light.png';
 //import cartDark from '../../assets/icons/cart-dark.png';
 
@@ -13,7 +13,7 @@ import home1 from '../../assets/home/home2.png';
 import home2 from '../../assets/home/home3.png';
 
 export default function Header({ carouselIndex = 0 }: { carouselIndex?: number }) {
-    const { totalItems } = useCart();
+    //const { totalItems } = useCart();
     const rotation = carouselIndex * 30;
 
     return (
@@ -24,7 +24,7 @@ export default function Header({ carouselIndex = 0 }: { carouselIndex?: number }
                     <div className='brand-title-2'>Spices</div>
                     <div className='brand-subtitle'>Authentic spices from Idukki hills</div>
                 </div>
-                  
+                
                 {/* <nav className="nav">
                     <NavLink to="/" end aria-label="Home">
                         <Icon light={homeLight} dark={homeDark} alt="Home" />

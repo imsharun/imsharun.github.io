@@ -4,6 +4,7 @@
     max-width: 1200px;
     margin: auto;
     width: 100%;
+    padding-bottom: 1px;
 }
 
 .header-inner {
@@ -74,31 +75,6 @@ margin-bottom: -125px;
     }
 }
 
-
-.nav {
-    display: flex;
-    gap: 1rem;
-}
-
-.nav a {
-    color: inherit;
-}
-
-.cart-link {
-    position: relative;
-}
-
-.badge {
-    display: inline-block;
-    min-width: 1rem;
-    padding: 0 0.35rem;
-    text-align: center;
-    border-radius: 999px;
-    background: var(--color-primary);
-    color: white;
-    font-size: 0.8rem;
-    margin-left: 0.25rem;
-}
 
 @media (prefers-color-scheme: dark) {
     .site-header {

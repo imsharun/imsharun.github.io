@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard/ProductCard';
-import Loader from '../components/Common/Loader/Loader';
+//import Loader from '../components/Common/Loader/Loader';
 import { liquidProducts, powderProducts } from '../data/products';
 import { liquidThumbmails, powderThumbnails } from '../data/thumbnails';
-import loaderLight from '../assets/loader-light.gif';
+//import loaderLight from '../assets/loader-light.gif';
 import type { Product } from '../types';
 import leftArrow from '../assets/icons/left-arrow.png';
 import rightArrow from '../assets/icons/right-arrow.png';
@@ -13,8 +13,9 @@ import gallery2 from '../assets/gallery/gallery2.png';
 
 import './Products.css';
 import Icon from '../components/Common/Icon/Icon';
+import Header from '../components/Home/Home';
 
-export default function Products({ onCarouselChange }: { onCarouselChange?: (index: number) => void }) {
+export default function Products() {
  
   const [products, setProducts] = useState<Product[]>([]);
   //const [loading, setLoading] = useState(true);
@@ -28,7 +29,6 @@ export default function Products({ onCarouselChange }: { onCarouselChange?: (ind
   const next = () => {
     setIndex((i) => {
       const newIndex = (i + 1) % categories.length;
-      onCarouselChange?.(newIndex);
       return newIndex;
     });
   };
@@ -36,7 +36,6 @@ export default function Products({ onCarouselChange }: { onCarouselChange?: (ind
   const prev = () => {
     setIndex((i) => {
       const newIndex = (i - 1 + categories.length) % categories.length;
-      onCarouselChange?.(newIndex);
       return newIndex;
     });
   };
@@ -47,6 +46,7 @@ export default function Products({ onCarouselChange }: { onCarouselChange?: (ind
       if (activeKey === 0) setProducts(powderProducts);
       else
         setProducts(liquidProducts);
+      
  
   }, [activeKey]);
 
@@ -61,7 +61,9 @@ export default function Products({ onCarouselChange }: { onCarouselChange?: (ind
   // }
 
   return (
-    <div className="products-page">  
+    <section>
+      <Header carouselIndex={index} />
+    <div className="products-page" id='products-section'>  
 
       <div className='title'>Our Products</div>
       <section className="carousel">
@@ -103,5 +105,7 @@ export default function Products({ onCarouselChange }: { onCarouselChange?: (ind
         <img src={gallery2} className="gallery-image" />
       </div>
     </div>
+    </section>
+
   );
 }

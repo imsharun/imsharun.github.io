@@ -1,5 +1,6 @@
 .products-page {
     padding: 0.75rem 1rem;
+        background: var(--color-bg-dark);
 
     & .title {
         font-weight: 600;
@@ -7,16 +8,19 @@
         line-height: 36px;
         color: var(--color-primary);
         padding-bottom: 10px;
+                text-align: center;
     }
 
     & .grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 1rem;
-        background: #fafafa;
         border-radius: 20px;
         border: 2px solid #80808026;
     }
+
+
+  
 
 
 }
@@ -31,7 +35,8 @@
     justify-content: space-between;
     gap: 16px;
     font-size: 24px;
-    max-width: 300px;;
+    max-width: 300px;
+    ;
     align-items: center;
     margin: auto;
     min-width: 160px;
@@ -79,6 +84,7 @@
 
 .gallery-gif-container {
     margin: 20px 0;
+
     & .gallery-gif {
         border-radius: 20px;
         width: 100%;
@@ -92,11 +98,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap:1em;
+    gap: 1em;
+
+
     & .gallery-image {
         border-radius: 20px;
         object-fit: cover;
         width: 100%;
-        min-width : 0px;
+        min-width: 0px;
     }
 }

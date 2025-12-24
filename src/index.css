@@ -11,7 +11,7 @@
   letter-spacing: -2%;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background: none;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,9 +24,9 @@
   --color-border-light: #eaeaea;
   --color-border-dark: #333;
   --color-bg-light: #fff;
-  --color-bg-dark: #1a1a1a;
+  --color-bg-dark: #100f0f;
   --color-bg-header-light: rgba(255, 255, 255, 0.8);
-  --color-bg-header-dark: rgba(36, 36, 36, 0.8);
+  --color-bg-header-dark: #100f0f;
   --color-text-secondary: #666;
   --color-oregano-yellow: #E7B700;
   --color-btn-bg:#f1f1f1;
@@ -85,7 +85,7 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    /* color: #213547; */
     background-color: #ffffff;
   }
 

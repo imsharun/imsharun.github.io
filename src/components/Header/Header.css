@@ -1,7 +1,5 @@
 .site-header {
-    position: sticky;
-    top: 0;
-    background: var(--color-bg-header-light);
+    background: var(--color-bg-header-dark);
     backdrop-filter: blur(8px);
     max-width: 1200px;
     margin: auto;
@@ -9,15 +7,49 @@
 }
 
 .header-inner {
+    background-image: url('../../assets/home/home1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0.75rem 1rem;
     display: flex;
-    align-items: center;
+    flex-direction: row-reverse;
+    min-height: 200px;
+}
+
+.top-images-container {
+    display: flex;
+    pointer-events: none;
+    flex-direction: row;
     justify-content: space-between;
+margin-bottom: -125px;
+    & .top-image-1-container {
+        position: relative;
+        top: -120px;
+        left: -50px;
+        width: 50%;
+
+        & img {
+            width: 250px;
+        }
+
+    }
+
+    & .top-image-2-container {
+        & img {
+                width: 100%;
+        }
+    }
 }
 
 .brand {
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 
     /* base styles */
     & .brand-title,
@@ -25,16 +57,17 @@
         font-weight: 700;
         line-height: 0.8em;
         font-size: 36px;
+        color: white;
     }
 
     & .brand-title {
-        color: var(--color-primary);
+        color: white;
     }
 
     & .brand-subtitle {
         font-size: 16px;
         font-weight: 500;
-        color: black;
+        color: white;
         margin-top: 5px;
     }
 }

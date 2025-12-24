@@ -2,13 +2,16 @@ import './App.css'
 import Header from './components/Header/Header'
 import Products from './pages/Products'
 import Cart from './pages/Cart'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Footer from './components/Footer/Footer'
 
 export default function App() {
+
+  const location = useLocation();
+  const hideHeader = location.pathname === '/cart';
   return (
     <div className="app">
-      <Header />
+      {!hideHeader && <Header />}
       <main className="container">
         <Routes>
           <Route path="/" element={<Products />} />

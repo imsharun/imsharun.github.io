@@ -49,7 +49,8 @@ export default function Products() {
   }
 
   return (
-    <div className="products-page">
+    <div className="products-page">  
+
       <div className='title'>Our Products</div>
       <section className="carousel">
 
@@ -79,12 +80,12 @@ export default function Products() {
 
       {/* Gallery Section */}
       <div className='gallery-gif-container'>
-            <img src={oreganoHomeGif} className="gallery-gif" />
+        <img src={oreganoHomeGif} className="gallery-gif" />
       </div>
 
-       <div className='gallery-images-container'>
-            <img src={gallery1} className="gallery-image" />
-            <img src={gallery2} className="gallery-image" />
+      <div className='gallery-images-container'>
+        <img src={gallery1} className="gallery-image" />
+        <img src={gallery2} className="gallery-image" />
       </div>
     </div>
   );

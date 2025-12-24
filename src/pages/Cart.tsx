@@ -1,11 +1,21 @@
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import './Cart.css';
 
 export default function Cart() {
   const { state, updateQty, removeItem, clear, subtotal } = useCart();
   const hasItems = state.items.length > 0;
-
+  const navigate = useNavigate();
   return (
     <section>
+      <div className="back-button-container">
+       <button onClick={() => navigate('/')}>
+       <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="23" fill="#e0e0e0"/>
+      <path d="M28 16 L18 24 L28 32" stroke="#333" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+        </button>
+        </div>
       <h2>Your Cart</h2>
       {!hasItems && <p>Your cart is empty.</p>}
       {hasItems && (

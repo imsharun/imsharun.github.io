@@ -30,9 +30,11 @@ margin-bottom: -125px;
         top: -120px;
         left: -50px;
         width: 50%;
-
+ 
         & img {
-            width: 250px;
+            width: 235px;
+            transition: transform 0.6s ease-in-out;
+    transform-origin: center;
         }
 
     }

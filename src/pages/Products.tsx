@@ -14,7 +14,8 @@ import gallery2 from '../assets/gallery/gallery2.png';
 import './Products.css';
 import Icon from '../components/Common/Icon/Icon';
 
-export default function Products() {
+export default function Products({ onCarouselChange }: { onCarouselChange?: (index: number) => void }) {
+ 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,8 +24,22 @@ export default function Products() {
 
   const activeKey = categories[index];
 
-  const next = () => setIndex((i) => (i + 1) % categories.length);
-  const prev = () => setIndex((i) => (i - 1 + categories.length) % categories.length);
+ 
+  const next = () => {
+    setIndex((i) => {
+      const newIndex = (i + 1) % categories.length;
+      onCarouselChange?.(newIndex);
+      return newIndex;
+    });
+  };
+
+  const prev = () => {
+    setIndex((i) => {
+      const newIndex = (i - 1 + categories.length) % categories.length;
+      onCarouselChange?.(newIndex);
+      return newIndex;
+    });
+  };
 
   useEffect(() => {
     // Simulate backend fetch with 5-second delay

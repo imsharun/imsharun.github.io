@@ -25,3 +25,12 @@ export const powderThumbnails: string[] = [
   thumb4,
   thumb5,
 ];
+
+
+export const spiceThumbnails: string[] = [
+  
+  thumb3,
+  thumb4,
+  thumb2,
+  thumb5,
+];

@@ -12,8 +12,10 @@ import './Header.css';
 import home1 from '../../assets/home/home2.png';
 import home2 from '../../assets/home/home3.png';
 
-export default function Header() {
+export default function Header({ carouselIndex = 0 }: { carouselIndex?: number }) {
     const { totalItems } = useCart();
+    const rotation = carouselIndex * 30;
+
     return (
         <header className="site-header">
             <div className="header-inner">
@@ -35,7 +37,7 @@ export default function Header() {
                 </nav> */}
             </div>
              <div className='top-images-container'>
-                <div className="top-image-1-container">   <img src={home1} className="top-image-1" /></div>
+                <div className="top-image-1-container" >   <img src={home1} className="top-image-1" style={{ transform: `rotate(${rotation}deg)` }}/></div>
      
                 <div className="top-image-2-container"> <img src={home2} className="top-image-2" /></div>
      

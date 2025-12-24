@@ -11,7 +11,6 @@
 
     & .grid {
         display: grid;
-        width: 100%;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 1rem;
         background: #fafafa;
@@ -98,5 +97,6 @@
         border-radius: 20px;
         object-fit: cover;
         width: 100%;
+        min-width : 0px;
     }
 }

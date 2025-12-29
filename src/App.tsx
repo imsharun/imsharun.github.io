@@ -3,6 +3,7 @@ import Products from './pages/Products'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import OrderConfirmation from './pages/OrderConfirmation'
+import ProductDetail from './pages/ProductDetail'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Footer from './components/Footer/Footer'
 import NavBar from './components/NavBar/NavBar'
@@ -24,6 +25,7 @@ export default function App() {
       <main className="container">
         <Routes>
           <Route path="/" element={<Products />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />

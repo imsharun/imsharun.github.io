@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import './Contact.css';
 
 const EMAIL = 'hello@oreganospices.com';
 const PHONE = '+91 98765 43210';
 
 export default function Contact() {
+  const navigate = useNavigate();
+
   return (
     <section className="contact-page">
       <div className="contact-card">
@@ -23,6 +26,11 @@ export default function Contact() {
         </div>
 
         <div className="note">Available 9:00–18:00 IST, Monday to Saturday.</div>
+
+        <div className="contact-actions">
+          <button onClick={() => navigate(-1)}>Back</button>
+          <button className="secondary" onClick={() => navigate('/')}>Continue Shopping</button>
+        </div>
       </div>
     </section>
   );

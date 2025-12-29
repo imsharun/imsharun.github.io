@@ -54,3 +54,14 @@
   margin-top: 12px;
   color: var(--color-primary);
 }
+
+.contact-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.contact-actions .secondary {
+  background: transparent;
+  border: 1px solid var(--color-border-dark);
+}

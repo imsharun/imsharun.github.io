@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Icon from '../components/Common/Icon/Icon';
@@ -22,16 +22,33 @@ export default function Checkout() {
   const navigate = useNavigate();
   const { state, subtotal, clear } = useCart();
 
-  const [form, setForm] = useState<AddressForm>({
-    fullName: '',
-    phone: '',
-    email: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    postalCode: '',
-    country: ''
+  const [form, setForm] = useState<AddressForm>(() => {
+    try {
+      const raw = localStorage.getItem('checkout:address:v1');
+      return raw ? (JSON.parse(raw) as AddressForm) : {
+        fullName: '',
+        phone: '',
+        email: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        country: ''
+      };
+    } catch {
+      return {
+        fullName: '',
+        phone: '',
+        email: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        country: ''
+      };
+    }
   });
 
   const hasItems = state.items.length > 0;
@@ -62,11 +79,35 @@ export default function Checkout() {
   function handleBuy(e: React.FormEvent) {
     e.preventDefault();
     if (!isValid()) return;
-    // Simulate successful purchase: clear cart and go home
+    // Persist last used address
+    try {
+      localStorage.setItem('checkout:address:v1', JSON.stringify(form));
+    } catch {}
+
+    // Prepare order details to show on confirmation page
+    const order = {
+      id: Math.random().toString(36).slice(2).toUpperCase(),
+      items: state.items.map(i => ({
+        id: i.product.id,
+        name: i.product.name,
+        quantity: i.quantity,
+        price: Object.values(i.product.price)[0] ?? 0,
+      })),
+      subtotal,
+      address: form,
+      placedAt: Date.now(),
+    };
+
     clear();
-    alert('Thank you! Your order has been placed.');
-    navigate('/');
+    navigate('/order-confirmation', { state: order });
   }
+
+  // Auto-save address as user types
+  useEffect(() => {
+    try {
+      localStorage.setItem('checkout:address:v1', JSON.stringify(form));
+    } catch {}
+  }, [form]);
 
   return (
     <section className="checkout-page">

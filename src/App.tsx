@@ -2,6 +2,7 @@ import './App.css'
 import Products from './pages/Products'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
+import OrderConfirmation from './pages/OrderConfirmation'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Footer from './components/Footer/Footer'
 import NavBar from './components/NavBar/NavBar'
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-confirmation" element={<OrderConfirmation />} />
         </Routes>
       </main>
 

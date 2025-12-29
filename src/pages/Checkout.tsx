@@ -1,0 +1,196 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import Icon from '../components/Common/Icon/Icon';
+import backArrow from '../assets/icons/back-arrow-dark.png';
+
+import './Checkout.css';
+
+type AddressForm = {
+  fullName: string;
+  phone: string;
+  email: string;
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+};
+
+export default function Checkout() {
+  const navigate = useNavigate();
+  const { state, subtotal, clear } = useCart();
+
+  const [form, setForm] = useState<AddressForm>({
+    fullName: '',
+    phone: '',
+    email: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: ''
+  });
+
+  const hasItems = state.items.length > 0;
+
+  function update<K extends keyof AddressForm>(key: K, value: AddressForm[K]) {
+    setForm(prev => ({ ...prev, [key]: value }));
+  }
+
+  function isValid() {
+    // Minimal validation: required fields present and phone/postal basic pattern
+    const requiredFilled = [
+      form.fullName,
+      form.phone,
+      form.address1,
+      form.city,
+      form.state,
+      form.postalCode,
+      form.country,
+    ].every(Boolean);
+
+    const phoneOk = /^\+?[0-9\s-]{7,15}$/.test(form.phone);
+    const postalOk = /^[A-Za-z0-9\s-]{3,12}$/.test(form.postalCode);
+    const emailOk = !form.email || /.+@.+\..+/.test(form.email);
+
+    return requiredFilled && phoneOk && postalOk && emailOk && hasItems;
+  }
+
+  function handleBuy(e: React.FormEvent) {
+    e.preventDefault();
+    if (!isValid()) return;
+    // Simulate successful purchase: clear cart and go home
+    clear();
+    alert('Thank you! Your order has been placed.');
+    navigate('/');
+  }
+
+  return (
+    <section className="checkout-page">
+      <div className="back-button-container">
+        <button onClick={() => navigate('/cart')}>
+          <Icon light={backArrow} alt="Back to Cart" className='back-arrow' />
+        </button>
+        <h1>Checkout</h1>
+      </div>
+
+      {!hasItems && (
+        <p className="empty-note">Your cart is empty. Add items to continue.</p>
+      )}
+
+      <form className="checkout-form" onSubmit={handleBuy}>
+        <div className="form-grid">
+          <label>
+            <span>Full Name</span>
+            <input
+              type="text"
+              value={form.fullName}
+              onChange={(e) => update('fullName', e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            <span>Phone</span>
+            <input
+              type="tel"
+              value={form.phone}
+              onChange={(e) => update('phone', e.target.value)}
+              placeholder="e.g. +91 98765 43210"
+              required
+            />
+          </label>
+
+          <label>
+            <span>Email (optional)</span>
+            <input
+              type="email"
+              value={form.email}
+              onChange={(e) => update('email', e.target.value)}
+              placeholder="you@example.com"
+            />
+          </label>
+
+          <label className="wide">
+            <span>Address Line 1</span>
+            <input
+              type="text"
+              value={form.address1}
+              onChange={(e) => update('address1', e.target.value)}
+              required
+            />
+          </label>
+
+          <label className="wide">
+            <span>Address Line 2</span>
+            <input
+              type="text"
+              value={form.address2}
+              onChange={(e) => update('address2', e.target.value)}
+              placeholder="Apartment, suite, etc. (optional)"
+            />
+          </label>
+
+          <label>
+            <span>City</span>
+            <input
+              type="text"
+              value={form.city}
+              onChange={(e) => update('city', e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            <span>State</span>
+            <input
+              type="text"
+              value={form.state}
+              onChange={(e) => update('state', e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            <span>Postal Code</span>
+            <input
+              type="text"
+              value={form.postalCode}
+              onChange={(e) => update('postalCode', e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            <span>Country</span>
+            <input
+              type="text"
+              value={form.country}
+              onChange={(e) => update('country', e.target.value)}
+              required
+            />
+          </label>
+        </div>
+
+        <div className="order-summary">
+          <div className="row">
+            <span>Items</span>
+            <strong>{state.items.reduce((a, i) => a + i.quantity, 0)}</strong>
+          </div>
+          <div className="row">
+            <span>Subtotal</span>
+            <strong>₹{subtotal.toFixed(2)}</strong>
+          </div>
+          <div className="actions">
+            <button type="submit" disabled={!isValid()}>
+              Buy Now
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+  );
+}

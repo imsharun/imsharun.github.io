@@ -35,7 +35,7 @@ export default function Cart() {
               <strong>₹{subtotal.toFixed(2)}</strong>
             </div>
             <div className="actions">
-              <button>Checkout</button>
+              <button onClick={() => navigate('/checkout')}>Checkout</button>
             </div>
           </div>
     </section>

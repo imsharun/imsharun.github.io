@@ -17,6 +17,7 @@ export default function CartItem({ product, quantity }: CartItemProps) {
   return (
     <div className='cart-item-container'>
       <div className="cart-item">
+        
         <button onClick={() => removeItem(product.id)} className="btn-remove-item" aria-label="Remove item">
           <Icon light={removeIcon} alt="Remove" />
         </button>

@@ -25,27 +25,37 @@
     pointer-events: none;
     flex-direction: row;
     justify-content: space-between;
-margin-bottom: -125px;
+    position: relative;
+    height: 113px;
+
     & .top-image-1-container {
         position: relative;
-        top: -120px;
-        left: -50px;
         width: 50%;
- 
+
         & img {
+
             width: 235px;
             transition: transform 0.6s ease-in-out;
-    transform-origin: center;
+            transform-origin: center;
+            position: absolute;
+            top: -113px;
+            left: -50px;
         }
-
     }
 
-    & .top-image-2-container {
-        & img {
-                width: 100%;
-        }
+}
+
+& .top-image-2-container {
+     position: relative;
+        width: 50%;
+    & img {
+       max-width: 200px;
+        position: absolute;
+        width: 100%;
+        right: 0;
     }
 }
+
 
 .brand {
 

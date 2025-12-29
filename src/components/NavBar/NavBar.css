@@ -1,26 +1,28 @@
 .nav {
-  
-    position: fixed;
+    position:fixed;
     top: 15px;
     width: 100%;
+    left: 50%;
+  transform: translateX(-50%) translateY(-120%);
+  
     display: flex;
     justify-content: space-between;
     z-index: 1000;
     pointer-events: none;
-    transform: translateY(-120%);
     opacity: 0;
     transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 /* shown: slide in and accept clicks only inside links container */
 .nav.visible {
-  transform: translateY(0);
+  position: fixed;
+  transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
 
 /* hidden: off-screen, no animation */
 .nav.hidden {
-  transform: translateY(-120%);
+  transform: translateX(-50%) translateY(-120%);
   opacity: 0;
   animation: none;
 }

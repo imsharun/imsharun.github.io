@@ -7,7 +7,7 @@ import './Cart.css';
 import Icon from '../components/Common/Icon/Icon';
 
 export default function Cart() {
-  const { state, clear, subtotal } = useCart();
+  const { state,  subtotal } = useCart();
   const hasItems = state.items.length > 0;
   const navigate = useNavigate();
   return (

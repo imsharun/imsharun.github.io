@@ -1,8 +1,10 @@
 .app {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   background-color: var(--color-bg-dark);
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding:0;
 }
 
 .container {

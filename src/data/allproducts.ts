@@ -8,6 +8,8 @@ import img12 from '../assets/sample-images/Group 12.png';
 import img14 from '../assets/sample-images/Group 14.png';
 import img17 from '../assets/sample-images/Group 17.png';
 import img13 from '../assets/sample-images/Group 13.png';
+import img21 from '../assets/sample-images/Group 21.png';
+import img20 from '../assets/sample-images/Group 20.png';
 import type { ProductCatalog } from '../types';
 
 
@@ -61,21 +63,21 @@ export const catalog: ProductCatalog = {
       id: 7,
       name: "Chilli Powder", 
       price: { "250g": 170, "500g": 340 },
-      image: img24,
+      image: img21,
       description: "Spicy red chilli powder bringing heat and vibrant color to your favorite meals."
     },
     { 
       id: 8,
       name: "Coriander Powder", 
       price: { "250g": 120, "500g": 210 },
-      image: img25,
+      image: img19,
       description: "Ground coriander with citrusy, warm notes ideal for curries and seasoning blends."
     },
     { 
       id: 9,
       name: "Turmeric Powder", 
       price: { "250g": 110, "500g": 220 },
-      image: img19,
+      image: img20,
       description: "Golden turmeric powder with earthy flavor and natural health benefits for cooking."
     },
     { 

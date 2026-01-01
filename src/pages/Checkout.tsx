@@ -22,6 +22,12 @@ export default function Checkout() {
   const navigate = useNavigate();
   const { state, subtotal, clear } = useCart();
 
+  declare global {
+    interface Window {
+      Razorpay?: any;
+    }
+  }
+
   const [form, setForm] = useState<AddressForm>(() => {
     try {
       const raw = localStorage.getItem('checkout:address:v1');
@@ -76,7 +82,19 @@ export default function Checkout() {
     return requiredFilled && phoneOk && postalOk && emailOk && hasItems;
   }
 
-  function handleBuy(e: React.FormEvent) {
+  const loadRazorpayScript = (src = 'https://checkout.razorpay.com/v1/checkout.js') => {
+    return new Promise<boolean>((resolve) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve(true);
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  async function handleBuy(e: React.FormEvent) {
     e.preventDefault();
     if (!isValid()) return;
     // Persist last used address
@@ -84,22 +102,56 @@ export default function Checkout() {
       localStorage.setItem('checkout:address:v1', JSON.stringify(form));
     } catch {}
 
-    // Prepare order details to show on confirmation page
-    const order = {
-      id: Math.random().toString(36).slice(2).toUpperCase(),
-      items: state.items.map(i => ({
-        id: i.product.id,
-        name: i.product.name,
-        quantity: i.quantity,
-        price: Object.values(i.product.price)[0] ?? 0,
-      })),
-      subtotal,
-      address: form,
-      placedAt: Date.now(),
+    const amountInPaise = Math.round(subtotal * 100);
+
+    const ok = await loadRazorpayScript();
+    if (!ok || !(window as any).Razorpay) {
+      alert('Razorpay SDK failed to load');
+      return;
+    }
+
+    const options: any = {
+      key: (import.meta as any).env.VITE_RAZORPAY_KEY || 'YOUR_KEY_ID',
+      amount: amountInPaise,
+      currency: 'INR',
+      name: 'Oregano Spices Inc',
+      description: 'Order Payment',
+      image: 'https://example.com/your_logo',
+      order_id: 'order_RyfETH3H4c11jY',
+      handler: function (response: any) {
+        // on success, create order and navigate to confirmation
+        const order = {
+          id: Math.random().toString(36).slice(2).toUpperCase(),
+          items: state.items.map(i => ({
+            id: i.product.id,
+            name: i.product.name,
+            quantity: i.quantity,
+            price: Object.values(i.product.price)[0] ?? 0,
+          })),
+          subtotal,
+          address: form,
+          placedAt: Date.now(),
+          payment: response,
+        };
+
+        try { clear(); } catch {}
+        navigate('/order-confirmation', { state: order });
+      },
+      prefill: {
+        name: form.fullName,
+        email: form.email,
+        contact: form.phone,
+      },
+      notes: { address: form.address1 },
+      theme: { color: '#3399cc' },
     };
 
-    clear();
-    navigate('/order-confirmation', { state: order });
+    const rzp = new (window as any).Razorpay(options);
+    rzp.on('payment.failed', (resp: any) => {
+      console.error('Payment failed', resp);
+      alert('Payment failed. See console for details.');
+    });
+    rzp.open();
   }
 
   // Auto-save address as user types
@@ -227,7 +279,7 @@ export default function Checkout() {
           </div>
           <div className="actions">
             <button type="submit" disabled={!isValid()}>
-              Buy Now
+              Pay Now
             </button>
           </div>
         </div>

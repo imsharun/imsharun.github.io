@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Icon from '../components/Common/Icon/Icon';
 import backArrow from '../assets/icons/back-arrow-dark.png';
-import { createOrder } from '../services/razorpayService';
+import { createOrder, verifyPayment } from '../services/razorpayService';
 
 import './Checkout.css';
 
@@ -108,7 +108,8 @@ export default function Checkout() {
     // create order on backend to get a valid Razorpay order id
     let orderId: string | undefined;
     try {
-      orderId = await createOrder(amountInPaise);
+      const items = state.items.map(i => ({ ProductId: i.product.id, Quantity: i.quantity }));
+      orderId = await createOrder({ CustomerName: form.fullName, Email: form.email, Items: items });
     } catch (err) {
       alert('Could not create order. Please try again.');
       return;
@@ -128,8 +129,25 @@ export default function Checkout() {
       description: 'Order Payment',
       image: 'https://example.com/your_logo',
       order_id: orderId,
-      handler: function (response: any) {
-        // on success, create order and navigate to confirmation
+      handler: async function (response: any) {
+        // verify payment with backend before creating order
+        try {
+          const ok = await verifyPayment(orderId!, {
+            PaymentId: response.razorpay_payment_id,
+            Signature: response.razorpay_signature,
+          });
+
+          if (!ok) {
+            alert('Payment verification failed. Please contact support.');
+            return;
+          }
+        } catch (err) {
+          console.error('verifyPayment error', err);
+          alert('Payment verification error. Please try again.');
+          return;
+        }
+
+        // on success, create order locally and navigate to confirmation
         const order = {
           id: Math.random().toString(36).slice(2).toUpperCase(),
           items: state.items.map(i => ({

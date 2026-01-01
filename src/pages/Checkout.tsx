@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Icon from '../components/Common/Icon/Icon';
 import backArrow from '../assets/icons/back-arrow-dark.png';
+import { createOrder } from '../services/razorpayService';
 
 import './Checkout.css';
 
@@ -104,6 +105,15 @@ export default function Checkout() {
 
     const amountInPaise = Math.round(subtotal * 100);
 
+    // create order on backend to get a valid Razorpay order id
+    let orderId: string | undefined;
+    try {
+      orderId = await createOrder(amountInPaise);
+    } catch (err) {
+      alert('Could not create order. Please try again.');
+      return;
+    }
+
     const ok = await loadRazorpayScript();
     if (!ok || !(window as any).Razorpay) {
       alert('Razorpay SDK failed to load');
@@ -117,7 +127,7 @@ export default function Checkout() {
       name: 'Oregano Spices Inc',
       description: 'Order Payment',
       image: 'https://example.com/your_logo',
-      order_id: 'order_RyfETH3H4c11jY',
+      order_id: orderId,
       handler: function (response: any) {
         // on success, create order and navigate to confirmation
         const order = {

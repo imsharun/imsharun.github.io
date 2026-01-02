@@ -51,7 +51,7 @@ export async function verifyPayment(orderId: string, payload: PaymentVerificatio
   try {
     const rawBase = (import.meta as any).env.VITE_API_BASE_URL || '';
     const base = rawBase.replace(/\/$/, '');
-    const endpoint = base ? `${base}/orders/${orderId}/verify-payment` : `/orders/${orderId}/verify-payment`;
+    const endpoint = base ? `${base}/api/orders/${orderId}/verify-payment` : `/orders/${orderId}/verify-payment`;
 
     const res = await fetch(endpoint, {
       method: 'POST',

@@ -152,11 +152,9 @@ aws iam create-user --user-name deployer
 aws iam create-access-key --user-name deployer
 ```
 
-6) SES verify an email address (example):
+6) SES (backend-handled)
 
-```bash
-aws ses verify-email-identity --email-address you@example.com --region us-east-1
-```
+- Email sending and SES verification are handled by the backend service/Lambda. No frontend CLI steps are required here. If you manage SES yourself, verify your sending domain or email in SES and request production access from the SES console.
 
 Notes:
 - Some operations (CloudFront distribution creation, OAC setup) are easier in the AWS Console; CloudFront create-distribution via CLI requires a JSON config and is more involved.

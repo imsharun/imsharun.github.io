@@ -1,5 +1,5 @@
 export type OrderItemRequest = {
-  ProductId: number;
+  ProductId: string;
   Quantity: number;
 };
 
@@ -10,11 +10,11 @@ export type PlaceOrderRequest = {
 };
 
 export type CreateOrderResponse = {
-  id?: string; // razorpay order id
+  razorpayOrderId?: string; // 
   orderId?: string;
 };
 
-export async function createOrder(payload: PlaceOrderRequest): Promise<string> {
+export async function createOrder(payload: PlaceOrderRequest): Promise<CreateOrderResponse> {
   try {
     const rawBase = (import.meta as any).env.VITE_API_BASE_URL || '';
     const base = rawBase.replace(/\/$/, '');
@@ -32,9 +32,7 @@ export async function createOrder(payload: PlaceOrderRequest): Promise<string> {
     }
 
     const data: CreateOrderResponse = await res.json();
-    const id = data.id ?? data.orderId;
-    if (!id) throw new Error('No order id returned from server');
-    return id;
+    return data;
   } catch (err) {
     console.error('createOrder error', err);
     throw err;

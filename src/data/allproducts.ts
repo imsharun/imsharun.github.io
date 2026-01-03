@@ -16,42 +16,42 @@ import type { ProductCatalog } from '../types';
 export const catalog: ProductCatalog = {
   spices: [
     { 
-      id: 37,
+      id: "Cardamom#250g",
       name: "Cardamom", 
       price: { "250g": 1140, "500g": 2110 },
       image: img30,
       description: "Premium green cardamom pods with aromatic flavor, perfect for chai, desserts, and spice blends."
     },
     { 
-      id: 38,
+      id: "Cinnamon#250g",
       name: "Cinnamon", 
       price: { "250g": 380, "500g": 790 },
       image: img14,
       description: "Warm and sweet cinnamon sticks ideal for beverages, baking, and traditional curries."
     },
     { 
-      id: 39,
+      id: "Star Anise#250g",
       name: "Star Anise", 
       price: { "250g": 290, "500g": 580 },
       image: img13,
       description: "Distinctive star-shaped spice with licorice notes, essential for Asian cuisine and broths."
     },
     { 
-      id: 40,
+      id: "Black Pepper#250g",
       name: "Black Pepper", 
       price: { "250g": 210, "500g": 390 },
       image: img12,
       description: "Premium whole black peppercorns with sharp, pungent flavor for everyday cooking."
     },
     { 
-      id: 41,
+      id: "Tamarind#250g",
       name: "Tamarind", 
       price: { "250g": 160, "500g": 270 },
       image: img17,
       description: "Tangy tamarind pods adding sourness and depth to curries, chutneys, and drinks."
     },
     { 
-      id: 42,
+      id: "Cloves#250g",
       name: "Cloves", 
       price: { "250g": 490, "500g": 1050 },
       image: img22,
@@ -60,28 +60,28 @@ export const catalog: ProductCatalog = {
   ],
   powders: [
     { 
-      id: 50,
+      id: "Chilli Powder#250g",
       name: "Chilli Powder", 
       price: { "250g": 170, "500g": 340 },
       image: img21,
       description: "Spicy red chilli powder bringing heat and vibrant color to your favorite meals."
     },
     { 
-      id: 51,
+      id: "Coriander Powder#250g",
       name: "Coriander Powder", 
       price: { "250g": 120, "500g": 210 },
       image: img19,
       description: "Ground coriander with citrusy, warm notes ideal for curries and seasoning blends."
     },
     { 
-      id: 52,
+      id: "Turmeric Powder#250g",
       name: "Turmeric Powder", 
       price: { "250g": 110, "500g": 220 },
       image: img20,
       description: "Golden turmeric powder with earthy flavor and natural health benefits for cooking."
     },
     { 
-      id: 53,
+      id: "Tea Powder#250g",
       name: "Tea Powder", 
       price: { "250g": 350, "500g": 690 },
       image: img22,
@@ -90,14 +90,14 @@ export const catalog: ProductCatalog = {
   ],
   liquidEssentials: [
     { 
-      id: 54,
+      id: "Coconut Oil#250ml",
       name: "Coconut Oil", 
       price: { "250ml": 160, "500ml": 300 },
       image: img24,
       description: "Pure virgin coconut oil with natural coconut aroma for cooking and wellness applications."
     },
     { 
-      id: 55,
+      id: "Pure Honey#250ml",
       name: "Pure Honey", 
       price: { "250ml": 970, "500ml": 1950 },
       image: img25,

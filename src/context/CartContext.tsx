@@ -4,8 +4,8 @@ import type { CartAction, CartState, OreganoProduct } from '../types';
 const CartContext = createContext<{
   state: CartState;
   addItem: (product: OreganoProduct, quantity?: number) => void;
-  removeItem: (productId: number) => void;
-  updateQty: (productId: number, quantity: number) => void;
+  removeItem: (productId: string) => void;
+  updateQty: (productId: string, quantity: number) => void;
   clear: () => void;
   totalItems: number;
   subtotal: number;
@@ -73,8 +73,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = (product: OreganoProduct, quantity = 1) =>
     dispatch({ type: 'ADD_ITEM', product, quantity });
-  const removeItem = (productId: number) => dispatch({ type: 'REMOVE_ITEM', productId });
-  const updateQty = (productId: number, quantity: number) =>
+  const removeItem = (productId: string) => dispatch({ type: 'REMOVE_ITEM', productId });
+  const updateQty = (productId: string, quantity: number) =>
     dispatch({ type: 'UPDATE_QTY', productId, quantity });
   const clear = () => dispatch({ type: 'CLEAR' });
 

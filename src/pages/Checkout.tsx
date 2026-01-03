@@ -3,9 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Icon from '../components/Common/Icon/Icon';
 import backArrow from '../assets/icons/back-arrow-dark.png';
-import { createOrder, verifyPayment } from '../services/razorpayService';
+import { createOrder, verifyPayment, type CreateOrderResponse } from '../services/razorpayService';
+import logo from '../assets/oregano-logo.png';
 
 import './Checkout.css';
+
+declare global {
+  interface Window {
+    Razorpay?: any;
+  }
+}
 
 type AddressForm = {
   fullName: string;
@@ -23,11 +30,6 @@ export default function Checkout() {
   const navigate = useNavigate();
   const { state, subtotal, clear } = useCart();
 
-  declare global {
-    interface Window {
-      Razorpay?: any;
-    }
-  }
 
   const [form, setForm] = useState<AddressForm>(() => {
     try {
@@ -106,10 +108,10 @@ export default function Checkout() {
     const amountInPaise = Math.round(subtotal * 100);
 
     // create order on backend to get a valid Razorpay order id
-    let orderId: string | undefined;
+    let orderDetails: CreateOrderResponse | undefined;
     try {
       const items = state.items.map(i => ({ ProductId: i.product.id, Quantity: i.quantity }));
-      orderId = await createOrder({ CustomerName: form.fullName, Email: form.email, Items: items });
+      orderDetails = await createOrder({ CustomerName: form.fullName, Email: form.email, Items: items });
     } catch (err) {
       alert('Could not create order. Please try again.');
       return;
@@ -127,12 +129,12 @@ export default function Checkout() {
       currency: 'INR',
       name: 'Oregano Spices Inc',
       description: 'Order Payment',
-      image: 'https://example.com/your_logo',
-      order_id: orderId,
+      image: logo,
+      order_id: orderDetails.razorpayOrderId,
       handler: async function (response: any) {
         // verify payment with backend before creating order
         try {
-          const ok = await verifyPayment(orderId!, {
+          const ok = await verifyPayment(orderDetails.orderId!, {
             PaymentId: response.razorpay_payment_id,
             Signature: response.razorpay_signature,
           });

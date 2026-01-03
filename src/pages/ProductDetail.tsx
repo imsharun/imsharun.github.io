@@ -15,7 +15,7 @@ export default function ProductDetail() {
       ...catalog.powders,
       ...catalog.liquidEssentials,
     ];
-    const productId = Number(id);
+    const productId = id;
     return all.find(p => p.id === productId);
   }, [id]);
 

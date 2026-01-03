@@ -228,12 +228,13 @@ export default function Checkout() {
           </label>
 
           <label>
-            <span>Email (optional)</span>
+            <span>Email</span>
             <input
               type="email"
               value={form.email}
               onChange={(e) => update('email', e.target.value)}
               placeholder="you@example.com"
+              required
             />
           </label>
 

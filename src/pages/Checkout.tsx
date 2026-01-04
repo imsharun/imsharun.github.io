@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Icon from '../components/Common/Icon/Icon';
+import Loader from '../components/Common/Loader/Loader';
 import backArrow from '../assets/icons/back-arrow-dark.png';
 import { createOrder, verifyPayment, type CreateOrderResponse } from '../services/razorpayService';
 import logo from '../assets/oregano-logo.png';
@@ -29,7 +30,7 @@ type AddressForm = {
 export default function Checkout() {
   const navigate = useNavigate();
   const { state, subtotal, clear } = useCart();
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const [form, setForm] = useState<AddressForm>(() => {
     try {
@@ -100,6 +101,7 @@ export default function Checkout() {
   async function handleBuy(e: React.FormEvent) {
     e.preventDefault();
     if (!isValid()) return;
+    setIsLoading(true);
     // Persist last used address
     try {
       localStorage.setItem('checkout:address:v1', JSON.stringify(form));
@@ -114,14 +116,18 @@ export default function Checkout() {
       orderDetails = await createOrder({ CustomerName: form.fullName, Email: form.email, Items: items });
     } catch (err) {
       alert('Could not create order. Please try again.');
+      setIsLoading(false);
       return;
     }
 
     const ok = await loadRazorpayScript();
     if (!ok || !(window as any).Razorpay) {
       alert('Razorpay SDK failed to load');
+      setIsLoading(false);
       return;
     }
+
+    setIsLoading(false);
 
     const options: any = {
       key: (import.meta as any).env.VITE_RAZORPAY_KEY || 'YOUR_KEY_ID',
@@ -193,6 +199,7 @@ export default function Checkout() {
 
   return (
     <section className="checkout-page">
+      {isLoading && <Loader />}
       <div className="back-button-container">
         <button onClick={() => navigate('/cart')}>
           <Icon light={backArrow} alt="Back to Cart" className='back-arrow' />

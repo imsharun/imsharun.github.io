@@ -5,6 +5,7 @@ import Checkout from './pages/Checkout'
 import OrderConfirmation from './pages/OrderConfirmation'
 import ProductDetail from './pages/ProductDetail'
 import Contact from './pages/Contact'
+import NotFound from './pages/NotFound'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Footer from './components/Footer/Footer'
 import NavBar from './components/NavBar/NavBar'
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 

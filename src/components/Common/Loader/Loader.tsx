@@ -8,6 +8,8 @@ type LoaderProps = {
     decorative?: boolean;    // true → aria-hidden and empty alt
 };
 
+import './Loader.css';
+
 export default function Loader({
     light,
     dark,
@@ -18,16 +20,18 @@ export default function Loader({
 }: LoaderProps) {
     const imgProps = decorative ? { alt: '', 'aria-hidden': true } : { alt };
     return (
-        <div>
-            {dark && <source media="(prefers-color-scheme: dark)" srcSet={dark} />}
-            <img
-                src={light}
-                {...imgProps}
-                className='loader'
-            />
+        <div className="loader-overlay">
             <div>
-                <h2>{mainText}</h2>
-                <p>{subText}</p>
+                {dark && <source media="(prefers-color-scheme: dark)" srcSet={dark} />}
+                <img
+                    src={light}
+                    {...imgProps}
+                    className='loader'
+                />
+                <div>
+                    <h2>{mainText}</h2>
+                    <p>{subText}</p>
+                </div>
             </div>
         </div>
     );

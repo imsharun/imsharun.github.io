@@ -61,6 +61,7 @@
 
 .qty input {
     width: 64px;
+    font-size: 16px;
 }
 
 .qty-counter {

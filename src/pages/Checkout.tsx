@@ -6,7 +6,7 @@ import Loader from '../components/Common/Loader/Loader';
 import backArrow from '../assets/icons/back-arrow-dark.png';
 import { createOrder, verifyPayment, type CreateOrderResponse } from '../services/razorpayService';
 import logo from '../assets/oregano-logo.png';
-
+import loadergif from '../assets/loader-light.gif';
 import './Checkout.css';
 
 declare global {
@@ -199,7 +199,7 @@ export default function Checkout() {
 
   return (
     <section className="checkout-page">
-      {isLoading && <Loader />}
+      {isLoading && <Loader light={loadergif}/>}
       <div className="back-button-container">
         <button onClick={() => navigate('/cart')}>
           <Icon light={backArrow} alt="Back to Cart" className='back-arrow' />

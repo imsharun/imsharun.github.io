@@ -49,7 +49,44 @@
 
 .nav-right {
   justify-content: flex-end;
-      margin-right: 27px;
+  margin-right: 27px;
+  gap: 0.5rem;
+}
+
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-user {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.nav-auth-btn {
+  border: 1px solid #ffffff33;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-auth-btn.primary {
+  background: var(--color-primary);
+  color: #0f0f0f;
+  border-color: var(--color-primary);
+}
+
+.nav-auth-btn:hover {
+  transform: translateY(-1px);
 }
 
 .nav a {

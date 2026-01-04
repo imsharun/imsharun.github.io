@@ -4,8 +4,10 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import OrderConfirmation from './pages/OrderConfirmation'
 import ProductDetail from './pages/ProductDetail'
-import Contact from './pages/Contact'
-import NotFound from './pages/NotFound'
+import Contact from './pages/General/Contact'
+import Login from './pages/Auth/Login'
+import Signup from './pages/Auth/Signup'
+import NotFound from './pages/General/NotFound'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Footer from './components/Footer/Footer'
 import NavBar from './components/NavBar/NavBar'
@@ -16,8 +18,9 @@ export default function App() {
   const location = useLocation()
   const scrollY = useScrollPosition()
 
-  const showNav = location.pathname !== '/cart' &&
-    (location.pathname === '/' && scrollY > 200)
+  // Show navbar on all pages except cart; if you want the old scroll-to-show
+  // behavior on home, reintroduce the scroll check.
+  const showNav = location.pathname !== '/cart'
 
 
   return (
@@ -32,6 +35,8 @@ export default function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

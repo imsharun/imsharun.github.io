@@ -6,6 +6,10 @@ import {
   getCurrentUser,
   confirmSignUp,
   resendSignUpCode,
+  resetPassword,
+  confirmResetPassword,
+  fetchUserAttributes,
+  updatePassword,
 } from 'aws-amplify/auth';
 
 const apiBase = ((import.meta as any).env.VITE_API_BASE_URL || '').replace(/\/$/, '');
@@ -36,6 +40,14 @@ export async function getIdToken(): Promise<string> {
   return token.toString();
 }
 
+export async function tryGetIdToken(): Promise<string | null> {
+  try {
+    return await getIdToken();
+  } catch {
+    return null;
+  }
+}
+
 export async function login(email: string, password: string) {
   return signIn({
     username: email,
@@ -56,6 +68,14 @@ export async function resendEmailCode(email: string) {
   return resendSignUpCode({ username: email });
 }
 
+export async function startPasswordReset(email: string) {
+  return resetPassword({ username: email });
+}
+
+export async function confirmPasswordReset(email: string, code: string, newPassword: string) {
+  return confirmResetPassword({ username: email, confirmationCode: code, newPassword });
+}
+
 export async function getCurrentUserInfo() {
   try {
     const user = await getCurrentUser();
@@ -63,6 +83,34 @@ export async function getCurrentUserInfo() {
   } catch {
     return null;
   }
+}
+
+export type UserProfile = {
+  username: string;
+  email: string | null;
+  name?: string;
+  phoneNumber?: string;
+  address?: string;
+};
+
+export async function getUserProfile(): Promise<UserProfile | null> {
+  try {
+    const user = await getCurrentUser();
+    const attrs = await fetchUserAttributes();
+    return {
+      username: user.username,
+      email: attrs.email ?? user.signInDetails?.loginId ?? null,
+      name: attrs.name,
+      phoneNumber: attrs.phone_number,
+      address: attrs.address,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function changePassword(currentPassword: string, newPassword: string) {
+  return updatePassword({ oldPassword: currentPassword, newPassword });
 }
 
 export async function getCart() {

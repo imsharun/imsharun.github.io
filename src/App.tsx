@@ -7,16 +7,15 @@ import ProductDetail from './pages/ProductDetail'
 import Contact from './pages/General/Contact'
 import Login from './pages/Auth/Login'
 import Signup from './pages/Auth/Signup'
+import ForgotPassword from './pages/Auth/ForgotPassword'
+import Profile from './pages/Auth/Profile'
 import NotFound from './pages/General/NotFound'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Footer from './components/Footer/Footer'
 import NavBar from './components/NavBar/NavBar'
-//import NavBar from './components/NavBar/NavBar'
-import useScrollPosition from './hooks/useScrollPosition'
 
 export default function App() {
   const location = useLocation()
-  const scrollY = useScrollPosition()
 
   // Show navbar on all pages except cart; if you want the old scroll-to-show
   // behavior on home, reintroduce the scroll check.
@@ -37,6 +36,8 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
 import type { CartAction, CartState, OreganoProduct } from '../types';
+import { getCart } from '../services/authService';
+import { Hub } from 'aws-amplify/utils';
 
 const CartContext = createContext<{
   state: CartState;
@@ -42,6 +44,8 @@ function reducer(state: CartState, action: CartAction): CartState {
     }
     case 'CLEAR':
       return initialState;
+    case 'SET_STATE':
+      return action.state;
     default:
       return state;
   }
@@ -70,6 +74,37 @@ function usePersistedCart() {
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = usePersistedCart();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadRemoteCart() {
+      try {
+        const remote = await getCart();
+        if (!cancelled && Array.isArray(remote?.items) && remote.items.length > 0) {
+          dispatch({ type: 'SET_STATE', state: remote });
+        }
+      } catch (err) {
+        // If unauthenticated or fetch fails, stay on local cart
+        console.warn('Remote cart fetch skipped', err);
+      }
+    }
+
+    // Listen for auth events to refresh cart on sign-in
+    const remove = Hub.listen('auth', ({ payload }) => {
+      if (payload.event === 'signedIn' || payload.event === 'tokenRefresh') {
+        loadRemoteCart();
+      }
+    });
+
+    // Try once on mount (if already signed in)
+    loadRemoteCart();
+
+    return () => {
+      cancelled = true;
+      remove();
+    };
+  }, [dispatch]);
 
   const addItem = (product: OreganoProduct, quantity = 1) =>
     dispatch({ type: 'ADD_ITEM', product, quantity });

@@ -12,7 +12,8 @@ export type CartAction =
   | { type: 'ADD_ITEM'; product: OreganoProduct; quantity?: number }
   | { type: 'REMOVE_ITEM'; productId: string }
   | { type: 'UPDATE_QTY'; productId: string; quantity: number }
-  | { type: 'CLEAR' };
+  | { type: 'CLEAR' }
+  | { type: 'SET_STATE'; state: CartState };
 
 
   // Define individual price mapping type

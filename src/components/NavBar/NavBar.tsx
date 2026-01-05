@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import './NavBar.css';
 import Icon from '../Common/Icon/Icon';
 import cartDark from '../../assets/icons/cart-dark.png';
@@ -9,6 +9,7 @@ import { getCurrentUserInfo, logout } from '../../services/authService';
 export default function NavBar({ show }: { show?: boolean }) {
     const { totalItems } = useCart();
     const navigate = useNavigate();
+    const location = useLocation();
     const [userEmail, setUserEmail] = useState<string | null>(null);
 
     useEffect(() => {
@@ -20,7 +21,7 @@ export default function NavBar({ show }: { show?: boolean }) {
                 setUserEmail(null);
             }
         })();
-    }, []);
+    }, [location.pathname]);
 
     const handleLogout = async () => {
         try {
@@ -47,6 +48,9 @@ export default function NavBar({ show }: { show?: boolean }) {
                     {userEmail ? (
                         <>
                             <span className="nav-user" title={userEmail}>{userEmail}</span>
+                            <button className="nav-auth-btn" type="button" onClick={() => navigate('/profile')}>
+                                Profile
+                            </button>
                             <button className="nav-auth-btn" type="button" onClick={handleLogout}>
                                 Log out
                             </button>

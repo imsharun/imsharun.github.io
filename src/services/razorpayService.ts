@@ -14,15 +14,21 @@ export type CreateOrderResponse = {
   orderId?: string;
 };
 
+import { tryGetIdToken } from './authService';
+
 export async function createOrder(payload: PlaceOrderRequest): Promise<CreateOrderResponse> {
   try {
     const rawBase = (import.meta as any).env.VITE_API_BASE_URL || '';
     const base = rawBase.replace(/\/$/, '');
     const endpoint = base ? `${base}/api/orders` : '/api/orders';
 
+    const token = await tryGetIdToken();
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     const res = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(payload),
     });
 
@@ -51,9 +57,13 @@ export async function verifyPayment(orderId: string, payload: PaymentVerificatio
     const base = rawBase.replace(/\/$/, '');
     const endpoint = base ? `${base}/api/orders/${orderId}/verify-payment` : `/orders/${orderId}/verify-payment`;
 
+    const token = await tryGetIdToken();
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     const res = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(payload),
     });
 

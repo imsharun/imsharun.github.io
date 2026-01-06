@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
 import type { CartAction, CartState, OreganoProduct } from '../types';
-import { getCart } from '../services/authService';
+import { getCart, addToCart, tryGetIdToken } from '../services/authService';
 import { Hub } from 'aws-amplify/utils';
 
 const CartContext = createContext<{
@@ -80,6 +80,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     async function loadRemoteCart() {
       try {
+        const token = await tryGetIdToken();
+        if (!token) {
+          return;
+        }
         const remote = await getCart();
         if (!cancelled && Array.isArray(remote?.items) && remote.items.length > 0) {
           dispatch({ type: 'SET_STATE', state: remote });
@@ -106,8 +110,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
   }, [dispatch]);
 
-  const addItem = (product: OreganoProduct, quantity = 1) =>
+  const addItem = async (product: OreganoProduct, quantity = 1) => {
+    // Add to local state immediately for optimistic UI
     dispatch({ type: 'ADD_ITEM', product, quantity });
+    
+    // If logged in, also sync to backend
+    try {
+      const token = await tryGetIdToken();
+      if (token) {
+        await addToCart(product.id, quantity);
+      }
+    } catch (err) {
+      console.error('Failed to add item to backend cart', err);
+      // Item is still in local cart, user can retry on next action
+    }
+  };
   const removeItem = (productId: string) => dispatch({ type: 'REMOVE_ITEM', productId });
   const updateQty = (productId: string, quantity: number) =>
     dispatch({ type: 'UPDATE_QTY', productId, quantity });

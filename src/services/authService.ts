@@ -124,6 +124,20 @@ export async function getCart() {
   return res.json();
 }
 
+export async function addToCart(productId: string, quantity: number) {
+  const token = await getIdToken();
+  const res = await fetch(withBase('/api/cart'), {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ productId, quantity }),
+  });
+  if (!res.ok) throw new Error(`addToCart failed: ${res.status}`);
+  return res.json();
+}
+
 export async function checkout(customerName: string) {
   const token = await getIdToken();
   const res = await fetch(withBase('/api/checkout'), {

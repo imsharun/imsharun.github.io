@@ -7,7 +7,7 @@ import './Cart.css';
 import Icon from '../components/Common/Icon/Icon';
 
 export default function Cart() {
-  const { state,  subtotal } = useCart();
+  const { state, subtotal, loading } = useCart();
   const hasItems = state.items.length > 0;
   const navigate = useNavigate();
   return (
@@ -18,18 +18,17 @@ export default function Cart() {
         </button>  <h1>Cart</h1>
         </div>
 
-    
-      {!hasItems && <p>Your cart is empty.</p>}
-      {hasItems && (
+      {loading && <div className="cart-loader">Loading cart...</div>}
+      {!loading && !hasItems && <p>Your cart is empty.</p>}
+      {!loading && hasItems && (
         <div className="cart-grid">
           {state.items.map(({ product, quantity }) => (
             <CartItem key={product.id} product={product} quantity={quantity} />
           ))}
-          
         </div>
-        
       )}
-      <div className="cart-summary">
+      {!loading && (
+        <div className="cart-summary">
             <div className="row">
               <span>Subtotal</span>
               <strong>₹{subtotal.toFixed(2)}</strong>
@@ -38,6 +37,7 @@ export default function Cart() {
               <button onClick={() => navigate('/checkout')}>Checkout</button>
             </div>
           </div>
+      )}
     </section>
   );
 }

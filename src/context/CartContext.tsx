@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import type { CartAction, CartState, OreganoProduct } from '../types';
 import { getCart, addToCart, tryGetIdToken } from '../services/authService';
 import { Hub } from 'aws-amplify/utils';
@@ -11,6 +11,7 @@ const CartContext = createContext<{
   clear: () => void;
   totalItems: number;
   subtotal: number;
+  loading: boolean;
 } | null>(null);
 
 const initialState: CartState = { items: [] };
@@ -74,35 +75,36 @@ function usePersistedCart() {
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = usePersistedCart();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
     async function loadRemoteCart() {
+      setLoading(true);
       try {
         const token = await tryGetIdToken();
         if (!token) {
+          setLoading(false);
           return;
         }
         const remote = await getCart();
-        if (!cancelled && Array.isArray(remote?.items) && remote.items.length > 0) {
+        if (!cancelled && remote && Array.isArray(remote.items)) {
           dispatch({ type: 'SET_STATE', state: remote });
         }
       } catch (err) {
-        // If unauthenticated or fetch fails, stay on local cart
         console.warn('Remote cart fetch skipped', err);
+      } finally {
+        setLoading(false);
       }
     }
 
-    // Listen for auth events to refresh cart on sign-in
+    // Listen for auth events to refresh cart on sign-in only
     const remove = Hub.listen('auth', ({ payload }) => {
-      if (payload.event === 'signedIn' || payload.event === 'tokenRefresh') {
+      if (payload.event === 'signedIn') {
         loadRemoteCart();
       }
     });
-
-    // Try once on mount (if already signed in)
-    loadRemoteCart();
 
     return () => {
       cancelled = true;
@@ -140,8 +142,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [state.items]);
 
   const value = useMemo(
-    () => ({ state, addItem, removeItem, updateQty, clear, totalItems, subtotal }),
-    [state, totalItems, subtotal],
+    () => ({ state, addItem, removeItem, updateQty, clear, totalItems, subtotal, loading }),
+    [state, totalItems, subtotal, loading],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

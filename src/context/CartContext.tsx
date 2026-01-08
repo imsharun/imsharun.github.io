@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useReducer, useState } f
 import type { CartAction, CartState, OreganoProduct } from '../types';
 import { getCart, addToCart, tryGetIdToken } from '../services/authService';
 import { Hub } from 'aws-amplify/utils';
+import { catalog } from '../data/allproducts';
 
 const CartContext = createContext<{
   state: CartState;
@@ -89,8 +90,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           return;
         }
         const remote = await getCart();
-        if (!cancelled && remote && Array.isArray(remote.items)) {
-          dispatch({ type: 'SET_STATE', state: remote });
+        if (!cancelled && Array.isArray(remote)) {
+          // Map backend cart items to CartState shape
+          const allProducts = [
+            ...catalog.spices,
+            ...catalog.powders,
+            ...catalog.liquidEssentials,
+          ];
+          const items = remote.map((item: any) => {
+            const product = allProducts.find(p => p.id === item.productId);
+            if (!product) return null;
+            return { product, quantity: item.quantity };
+          }).filter(Boolean);
+          dispatch({ type: 'SET_STATE', state: { items } });
         }
       } catch (err) {
         console.warn('Remote cart fetch skipped', err);
